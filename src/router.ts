@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body, validationResult, oneOf, check } from 'express-validator';
+import { body, validationResult, oneOf, check, query, param } from 'express-validator';
 import { handleInputErrors } from './modules/errors';
 import { getProduct, getProducts, createProduct, updateProduct, deleteProduct } from './handlers/product';
 import { createUpdate, deleteUpdate, getUpdate, getUpdates, updateUpdate } from './handlers/update';
@@ -9,12 +9,12 @@ const router = Router();
 // Products
 
 router.get('/product', getProducts);
-router.get('/product/:id', getProduct);
-router.post('/product/:id', 
+router.get('/product/:id', param('id').exists(), handleInputErrors, getProduct);
+router.post('/product', 
   body('name').isString(), 
   handleInputErrors, 
   createProduct);
-router.patch('/product/:id', 
+router.put('/product/:id', 
   body('name').isString(), 
   handleInputErrors, 
   updateProduct);
@@ -25,7 +25,7 @@ router.get('/update',
   body('productId'),
   handleInputErrors,
   getUpdates);
-router.get('/update/:id', getUpdate);
+router.get('/update/:id', param('id').exists().isString, getUpdate);
 router.post('/update', 
   body('title').exists().isString, 
   body('body').exists().isString, 

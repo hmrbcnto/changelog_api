@@ -49,10 +49,25 @@ export const createProduct = async (req,res) => {
 export const updateProduct = async (req,res) => {
   const userId = req.user.id;
   const productId = req.params.id;
-  const updatedProduct = await prisma.product.update({
+  // Check if product belongs to user
+  const product = await prisma.product.findFirst({
     where: {
       id: productId,
-      id_belongsToId: userId
+      belongsToId: userId
+    }
+  });
+
+  if (!product) {
+    res.status(400);
+    res.json({
+      message: 'Invalid input'
+    });
+    return;
+  }
+
+  const updatedProduct = await prisma.product.update({
+    where: {
+      id: productId
     },
     data: {
       name: req.body.name
