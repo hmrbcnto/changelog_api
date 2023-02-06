@@ -1,8 +1,6 @@
 import prisma from '../db';
-import { } from '../modules/auth';
 
 export const getProducts = async (req, res) => {
-  // Check if user is logged in
   const userId = req.user.id;
   const user = await prisma.user.findUnique({
     where: {
