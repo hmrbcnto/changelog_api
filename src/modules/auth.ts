@@ -49,5 +49,7 @@ const comparePassword = (password: string, hashedPassword: string) => {
 
 export default {
   createJWT,
-  protect
+  protect,
+  hashPassword,
+  comparePassword
 };
