@@ -1,8 +1,8 @@
 import app from './server';
 import * as dotenv from 'dotenv';
 dotenv.config();
+import config from './config';
 
-app.listen(2000, () => {
-	console.log('running on http://localhost:2000');
+app.listen(config.port, () => {
+	console.log(`running on http://localhost:${config.port}`);
 });
-
