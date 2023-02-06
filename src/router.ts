@@ -25,23 +25,22 @@ router.get('/update',
   body('productId'),
   handleInputErrors,
   getUpdates);
-router.get('/update/:id', param('id').exists().isString, getUpdate);
+router.get('/update/:id', param('id').exists().isString(), getUpdate);
 router.post('/update', 
-  body('title').exists().isString, 
-  body('body').exists().isString, 
-  oneOf([check('status').isIn(['IN_PROGRESS', 'DEPRECATED', 'SHIPPED'])]),
-  body('version').optional,
+  body('title').exists().isString(), 
+  body('status').isIn(['IN_PROGRESS', 'DEPRECATED', 'SHIPPED']).optional(),
+  body('version').optional(),
+  body('productId').exists().isString(),
   handleInputErrors,
   createUpdate);
 router.put('/update/:id', 
-  body('title').optional, 
-  body('body').optional, 
-  oneOf([check('status').isIn(['IN_PROGRESS', 'DEPRECATED', 'SHIPPED'])]),
-  body('version').optional, 
+  body('title').optional(), 
+  body('status').isIn(['IN_PROGRESS', 'DEPRECATED', 'SHIPPED']).optional(),
+  body('version').optional(), 
   handleInputErrors,
   updateUpdate);
 router.delete('/update/:id', 
-  body('id').exists().isString,
+  body('id').exists().isString(),
   handleInputErrors,
   deleteUpdate);
 
