@@ -2,10 +2,8 @@ import express from 'express';
 import router from './router';
 import morgan from 'morgan';
 import cors from 'cors';
-import Auth from './modules/auth';
+import { protect, createJWT } from './modules/auth';
 import { createNewUser, signIn } from './handlers/user';
-
-const { protect, createJWT } = Auth;
 
 const app = express();
 
