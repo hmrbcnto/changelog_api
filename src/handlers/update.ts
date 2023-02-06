@@ -14,7 +14,7 @@ export const getUpdates = async (req, res) => {
   const updates = products.map(product => product.updates);
 
   res.json({
-    data: updates
+    data: updates.flat()
   });
 }
 
@@ -33,11 +33,12 @@ export const getUpdate = async (req,res) => {
 };
 
 export const createUpdate = async (req, res) => {
+  const { productId, ...body } = req.body;
   // Check if product id belongs to you
-  const product = await prisma.product.findUnique({
+  const product = await prisma.product.findFirst({
     where: {
       id: req.body.productId,
-      id_belongsToId: req.user.id
+      belongsToId: req.user.id
     }
   });
 
@@ -50,7 +51,14 @@ export const createUpdate = async (req, res) => {
   };
 
   const update = await prisma.update.create({
-    data: req.body
+    data: {
+      ...body,
+      product: {
+        connect: {
+          id: productId
+        }
+      }
+    }
   });
 
   res.json({
